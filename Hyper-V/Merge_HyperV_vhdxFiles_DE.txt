@@ -1,0 +1,15 @@
+https://learn.microsoft.com/de-de/troubleshoot/windows-server/virtualization/merge-checkpoints-with-many-differencing-disks
+
+Wenn eine VM durch Prüfpunkte (Checkpoints) weitere Speicherdateien (meist .avhdx) erstellt,
+können diese auf nachfolgende Weise zusammengeführt werden.
+
+Variante 1: 
+-'Merge_HyperV_vhdxFiles.ps1' ausführen
+-Namen der Ziel VM eingeben.
+-Das Script ermittelt dann im ersten Schritt alle zugehörigen avhdx Dateien.
+-Den Output auf Fehler überprüfen. Sind keine Einträge mit dem VHDType 'Error' enthalten, kann fortgefahren werden.
+-Im nächsten Schritt wird, im gleichen Verzeichnis wie das ps1 Script, die Datei 'merge.txt' erstellt,
+ welche die generierten Merge-Befehle enthält. Diese müssen absteigend ausgeführt werden.
+-Zuletzt wird der User gefragt, ob die Merge-Befehle automatisch ausgeführt werden sollen.
+
+Variante 2: Schritte wie im eingängigen Link durchgehen.
