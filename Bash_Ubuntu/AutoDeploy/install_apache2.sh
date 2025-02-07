@@ -2,7 +2,10 @@
 CONFIG_FILE="" # Als optionaler Parameter übergeben
 
 # Standardwerte (werden überschrieben, falls eine Config existiert)
-LOGFILE="/var/log/setup_$(hostname).log"
+SCRIPT_DIR="$(dirname "$0")"
+LOG_DIR="$SCRIPT_DIR/log"
+TMP_LOGFILE="/tmp/setup_$(hostname).log"
+LOGFILE="$TMP_LOGFILE"
 ADMIN_CONTACT="yourname@example.com"
 WWW_PUBLIC_DIR="/var/www/public/"
 SERVER_NAME="localhost"
@@ -120,5 +123,16 @@ sudo a2ensite "$MAIN_SITE_CONF_FILE" || error_exit "Konnte $MAIN_SITE_CONF_FILE 
 
 log "Apache2 neu starten..."
 sudo systemctl restart apache2 || error_exit "Neustart von Apache2 fehlgeschlagen"
+
+# Logfile aus tmpfs in das Skriptverzeichnis verschieben
+log "Speichere Logdatei..."
+sudo mkdir -p "$LOG_DIR"
+# Prüfen ob Logdatei bereits vorhanden. Wenn true, Inhalt anhängen
+if [[ -f "$LOG_DIR/setup_$(hostname).log" ]]; then
+    cat "$TMP_LOGFILE" | sudo tee -a "$LOG_DIR/setup_$(hostname).log" > /dev/null
+    sudo rm "$TMP_LOGFILE"
+else
+    sudo mv "$TMP_LOGFILE" "$LOG_DIR/setup_$(hostname).log" || log "WARNUNG: Konnte Logdatei nicht verschieben!"
+fi
 
 exit 0
