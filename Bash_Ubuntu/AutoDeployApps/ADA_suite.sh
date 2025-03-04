@@ -6,4 +6,6 @@ EXMOD="./modules/"
 
 # Module deployment here
 # Selection by deleting comment #
-#$EXMOD+"install_apache2.sh"
+#
+#$EXMOD+"install_openssh.sh "+$CONF
+#$EXMOD+"install_apache2.sh "+$CONF
