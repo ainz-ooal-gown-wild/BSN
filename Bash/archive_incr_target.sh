@@ -17,7 +17,7 @@ archive_name=$3 # Optionally implement an automated naming scheme here
 # modular strings
 backup_filename="${archive_name}.tar.xz" # .xz for Schwarzenegger-grade-compression
 backup_path="${vault_dir}${backup_filename}"
-snapshot_name="${archive_name}-snapshot"
+snapshot_file="${archive_name}-snapshot"
 log_file="${archive_name}.log"
 
 # logging function
@@ -38,7 +38,7 @@ mkdir -p "$vault_dir"
 log "Starte Komprimierung nach $backup_path..."
 log "Unkomprimierte Größe von ${target_dir}: $uncompressed_size"
 
-tar -czg "$snapshot_name" -f "${vault_dir}${count}-${archive_name}" 
+tar -czg "${vault_dir}$snapshot_file" -f "${vault_dir}${count}-${archive_name}" 
 
 log "Größe der komprimierten Archive in ${vault_dir}: " + $(du -sh "${vault_dir}" | cut -f1)
 log "Backup abgeschlossen!"
